@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TicTacToe</string>
+    <string name="message1">Player 1 wins</string>
+    <string name="message2">Player 2 wins</string>
+    <string name="message3">Draw</string>
+    <string name="message4">Player wins</string>
+    <string name="message5">Computer wins</string>
+    <string name="newgame">New Game</string>
+    <string name="switchmode">Switch Mode</string>
+    <string name="mode1">Current Mode: Human VS. Human"</string>
+    <string name="mode2">Current Mode: Human VS. Computer"</string>
+    <string name="empty"></string>
+</resources>
