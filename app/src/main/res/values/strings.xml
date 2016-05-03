@@ -7,7 +7,10 @@
     <string name="message5">Computer wins</string>
     <string name="newgame">New Game</string>
     <string name="switchmode">Switch Mode</string>
-    <string name="mode1">Current Mode: Human VS. Human"</string>
-    <string name="mode2">Current Mode: Human VS. Computer"</string>
+    <string name="mode1">Current Mode: Human VS. Human</string>
+    <string name="mode2">Current Mode: Human VS. Computer</string>
+    <string name="radio1">Easy</string>
+    <string name="radio2">Medium</string>
+    <string name="radio3">Hard</string>
     <string name="empty"></string>
 </resources>

@@ -4,9 +4,9 @@
     import android.os.Bundle;
     import android.view.View;
     import android.widget.Button;
+    import android.widget.RadioButton;
+    import android.widget.RadioGroup;
     import android.widget.TextView;
-
-    //Since view parameter is not needed, find ways to simplify methods!!!
 
     public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +21,7 @@
         public static boolean turn = true;
         public static boolean mode = true;
         public static int count = 0;
+        public static int level = 0;
 
         public void UpdateState(View view) {
             if (mode) {
@@ -30,8 +31,20 @@
                 HumanMode(view);
                 ComputerMode(view);
                 turn=!turn;
-
             }
+        }
+
+        public void RadioButtonClick (View view) {
+            if (view.getId() == R.id.radio_easy) {
+                level=0;
+            }
+            else if (view.getId() == R.id.radio_medium) {
+                level=1;
+            }
+            else {
+                level=2;
+            }
+            NewGame(view);
         }
 
         public void HumanMode (View view) {
@@ -228,48 +241,51 @@
                 } else {
                     boolean made_move = false;
                     boolean finished = false;
-                    for (int i = 0; i < 3 && !finished; i++) {
-                        for (int j = 0; j < 3; j++) {
-                            if (!filled[i][j]) {
-                                buttons[i][j].setText("O");
-                                if (checkWin("O")) {
-                                    TextView tv = (TextView) findViewById(R.id.text1);
-                                    assert (tv != null);
-                                    tv.setText(R.string.message5);
-                                    filled[i][j] = true;
-                                    ++count;
-                                    buttons[i][j].setClickable(false);
-                                    made_move = true;
-                                    finished = true;
-                                    for (int a = 0; a < 3; a++) {
-                                        for (int b = 0; b < 3; b++) {
-                                            buttons[a][b].setClickable(false);
-                                        }
-                                    }
-                                    break;
-                                } else {
-                                    buttons[i][j].setText("");
-                                }
-                            }
-                        }
-                    }
-
-                    finished = false;
-                    if (!made_move) {
+                    if (level==2) {
                         for (int i = 0; i < 3 && !finished; i++) {
                             for (int j = 0; j < 3; j++) {
                                 if (!filled[i][j]) {
-                                    buttons[i][j].setText("X");
-                                    if (checkWin("X")) {
-                                        buttons[i][j].setText("O");
+                                    buttons[i][j].setText("O");
+                                    if (checkWin("O")) {
+                                        TextView tv = (TextView) findViewById(R.id.text1);
+                                        assert (tv != null);
+                                        tv.setText(R.string.message5);
                                         filled[i][j] = true;
                                         ++count;
                                         buttons[i][j].setClickable(false);
                                         made_move = true;
                                         finished = true;
+                                        for (int a = 0; a < 3; a++) {
+                                            for (int b = 0; b < 3; b++) {
+                                                buttons[a][b].setClickable(false);
+                                            }
+                                        }
                                         break;
                                     } else {
                                         buttons[i][j].setText("");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (level==1 || level==2) {
+                        finished = false;
+                        if (!made_move) {
+                            for (int i = 0; i < 3 && !finished; i++) {
+                                for (int j = 0; j < 3; j++) {
+                                    if (!filled[i][j]) {
+                                        buttons[i][j].setText("X");
+                                        if (checkWin("X")) {
+                                            buttons[i][j].setText("O");
+                                            filled[i][j] = true;
+                                            ++count;
+                                            buttons[i][j].setClickable(false);
+                                            made_move = true;
+                                            finished = true;
+                                            break;
+                                        } else {
+                                            buttons[i][j].setText("");
+                                        }
                                     }
                                 }
                             }
@@ -379,17 +395,21 @@
         }
 
         public void ChangeMode (View view) {
+            TextView tv= (TextView) findViewById(R.id.text2);
+            assert(tv!=null);
+            RadioGroup rg= (RadioGroup) findViewById(R.id.radio_buttons);
+            assert(rg!=null);
             if (mode) {
                 mode = false;
-                TextView tv= (TextView) findViewById(R.id.text2);
-                assert(tv!=null);
                 tv.setText(R.string.mode2);
+                /*RadioButton r_easy= (RadioButton) findViewById(R.id.radio_easy);
+                r_easy.setChecked(true);*/
+                rg.setVisibility(View.VISIBLE);
             }
             else {
                 mode = true;
-                TextView tv= (TextView) findViewById(R.id.text2);
-                assert(tv!=null);
                 tv.setText(R.string.mode1);
+                rg.setVisibility(View.INVISIBLE);
             }
             NewGame(view);
         }

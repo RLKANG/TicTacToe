@@ -99,6 +99,34 @@
 
 </GridLayout>
 
+    <RadioGroup
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radio_buttons"
+        android:layout_above="@+id/mode"
+        android:checkedButton="@+id/radio_easy"
+        android:visibility="invisible"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio1"
+            android:onClick="RadioButtonClick"/>
+        <RadioButton android:id="@+id/radio_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio2"
+            android:onClick="RadioButtonClick"/>
+        <RadioButton android:id="@+id/radio_hard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio3"
+            android:onClick="RadioButtonClick"/>
+    </RadioGroup>
+
     <Button
         android:id="@+id/reset"
         android:text="@string/newgame"
@@ -113,19 +141,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
-        android:layout_above="@+id/mode"
+        android:layout_below="@+id/reset"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="25dp"
+        android:layout_margin="25dp"
         android:text="" />
 
     <Button
         android:id="@+id/mode"
         android:layout_width="128dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/text2"
         android:text="@string/switchmode"
         android:background="@android:color/holo_green_light"
+        android:layout_marginTop="10dp"
         android:onClick="ChangeMode"/>
 
     <TextView
@@ -135,7 +164,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:text="@string/mode1" />
 
 
