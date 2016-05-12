@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+    <string-array name="updateMode">
+        <item name="1">Player vs. Player</item>
+        <item name="2">Player vs. Computer</item>
+    </string-array>
+
+    <string-array name="updateModeEntries">
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    <string-array name="updateLevel">
+        <item name="1">Easy</item>
+        <item name="2">Medium</item>
+        <item name="3">Hard</item>
+    </string-array>
+
+    <string-array name="updateLevelEntries">
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="3">3</item>
+    </string-array>
+
+    <string-array name="updateChallenge">
+        <item name="1">Player</item>
+        <item name="2">Computer</item>
+    </string-array>
+
+    <string-array name="updateChallengeEntries">
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
+
+    </resources>

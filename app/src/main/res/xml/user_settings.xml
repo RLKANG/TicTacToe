@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General Settings" >
+
+        <ListPreference
+            android:key="prefUpdateMode"
+            android:title="Player Mode"
+            android:summary="Player vs. Player"
+            android:entries="@array/updateMode"
+            android:entryValues="@array/updateModeEntries"
+            android:defaultValue="1" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Player vs. Computer Settings" >
+        <ListPreference
+            android:key="prefUpdateLevel"
+            android:title="Level"
+            android:summary="Easy"
+            android:entries="@array/updateLevel"
+            android:entryValues="@array/updateLevelEntries"
+            android:defaultValue="1" />
+
+        <ListPreference
+            android:key="prefUpdateChallenge"
+            android:title="Challenge Mode"
+            android:summary="Player goes first"
+            android:entries="@array/updateChallenge"
+            android:entryValues="@array/updateChallengeEntries"
+            android:defaultValue="1" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
