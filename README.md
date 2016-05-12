@@ -33,12 +33,12 @@ Since Tic-Tac-Toe is a solved game, the AI revolves around attempting to be a pe
 
 * Win the game (Medium & Hard)
 * Block the opponent from winning immediately (Medium & Hard)
-*Attempt to make a fork (Hard)
-*Block an opponent's fork (Hard)
-*Take the center square (Easy, Medium & Hard)
-*Take a corner square (Easy & Hard)
-*Take a side square (Easy, Medium & Hard)
-*Take any square (Medium)
+* Attempt to make a fork (Hard)
+* Block an opponent's fork (Hard)
+* Take the center square (Easy, Medium & Hard)
+* Take a corner square (Easy & Hard)
+* Take a side square (Easy, Medium & Hard)
+* Take any square (Medium)
 
 Note that if Challenge mode is on (which means the Computer will go first) the Computer will probably attempt to make forks more than if Challenge mode is on.
 
