@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int SETTINGS = 1;
 
+    //Global variables to keep up with preferences
+    private static final int SETTINGS = 1;
     public static boolean filled[][] = new boolean[3][3];
     public static boolean won = false;
     public static boolean turn = true;
@@ -26,46 +27,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int cur_mode = Integer.parseInt(sharedPrefs.getString("prefUpdateMode", "1"));
-        TextView tv1 = (TextView) findViewById(R.id.text2);
-        assert (tv1 != null);
-        if (cur_mode == 1) {
-            mode = true;
-            tv1.setText(R.string.mode1);
-        } else {
-            mode = false;
-            tv1.setText(R.string.mode2);
-        }
-
-        int cur_level = Integer.parseInt(sharedPrefs.getString("prefUpdateLevel", "1"));
-        TextView tv2 = (TextView) findViewById(R.id.text3);
-        assert (tv2 != null);
-        if (cur_level == 1) {
-            level = 0;
-            if (!mode) {
-                tv2.setText(R.string.easy);
-            }
-        } else if (cur_level == 2) {
-            level = 1;
-            if (!mode) {
-                tv2.setText(R.string.medium);
-            }
-        } else {
-            level = 2;
-            if (!mode) {
-                tv2.setText(R.string.hard);
-            }
-        }
-
-        int cur_challenge = Integer.parseInt(sharedPrefs.getString("prefUpdateChallenge", "1"));
-        if (cur_challenge == 1) {
-            challenge = false;
-        } else {
-            challenge = true;
-            if (!mode) {
-                ComputerMode("X");
-            }
+        update(sharedPrefs, true);
+        Reset();
+        if (challenge && !mode) {
+            ComputerMode("X");
         }
     }
 
@@ -82,217 +47,170 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUserSettings() {
+    public void updateUserSettings() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView tv1 = (TextView) findViewById(R.id.text2);
-        assert (tv1 != null);
-        TextView tv2 = (TextView) findViewById(R.id.text3);
-        assert (tv2 != null);
+        update(sharedPrefs, false);
+    }
 
-        int getmode = Integer.parseInt(sharedPrefs.getString("prefUpdateMode", "1"));
-        if ((getmode == 1 && !mode) || (getmode == 2 && mode)) {
+    //Update home screen with preferences
+    public void update(SharedPreferences sharedPrefs, boolean init) {
+        TextView displayMode = (TextView) findViewById(R.id.displayMode);
+        TextView displayLevel = (TextView) findViewById(R.id.displayLevel);
+        assert (displayMode != null);
+        assert (displayLevel != null);
+        boolean made_change= false;
+
+        //Find current mode
+        int cur_mode = Integer.parseInt(sharedPrefs.getString("prefUpdateMode", "1"));
+        if (!init && ((cur_mode == 1 && !mode) || (cur_mode == 2 && mode))) {
             Reset();
+            made_change= true;
         }
-
-        if (getmode == 1) {
+        if (cur_mode == 1) {
             mode = true;
-            tv1.setText(R.string.mode1);
-            tv2.setText(R.string.empty);
+            displayMode.setText(R.string.mode1);
+            displayLevel.setText(R.string.empty);
         } else {
             mode = false;
-            tv1.setText(R.string.mode2);
+            displayMode.setText(R.string.mode2);
         }
 
-        int getlevel = Integer.parseInt(sharedPrefs.getString("prefUpdateLevel", "1"));
-        if ((getlevel - 1) != level) {
+        //Find current level
+        int cur_level = Integer.parseInt(sharedPrefs.getString("prefUpdateLevel", "1"));
+        if ((!init && !mode) && ((cur_level - 1) != level)) {
             Reset();
+            made_change= true;
         }
-
-        if (getlevel == 1) {
+        if (cur_level == 1) {
             level = 0;
             if (!mode) {
-                tv2.setText(R.string.easy);
+                displayLevel.setText(R.string.easy);
             }
-
-        } else if (getlevel == 2) {
+        } else if (cur_level == 2) {
             level = 1;
             if (!mode) {
-                tv2.setText(R.string.medium);
+                displayLevel.setText(R.string.medium);
             }
         } else {
             level = 2;
             if (!mode) {
-                tv2.setText(R.string.hard);
+                displayLevel.setText(R.string.hard);
             }
         }
 
-        int getchallenge = Integer.parseInt(sharedPrefs.getString("prefUpdateChallenge", "1"));
-        if ((getchallenge == 1 && challenge) || (getchallenge == 2 && !challenge)) {
+        //Find current challenge mode
+        int cur_challenge = Integer.parseInt(sharedPrefs.getString("prefUpdateChallenge", "1"));
+        if ((!init && !mode) && ((cur_challenge == 1 && challenge) || (cur_challenge == 2 && !challenge))) {
             Reset();
+            made_change= true;
         }
-        if (getchallenge == 1) {
+        if (cur_challenge == 1) {
             challenge = false;
         } else {
             challenge = true;
         }
 
-        if (challenge && !mode) {
+        //Move the Computer (first move)
+        if ((init || made_change) && (challenge && !mode)) {
             ComputerMode("X");
         }
     }
 
     public void UpdateState(View view) {
         if (mode) {
+            //If Player vs. Player
             HumanMode(view);
         } else if (!challenge) {
+            //If Player vs. Computer (challenge mode off)
             HumanMode(view);
             ComputerMode("O");
             turn = !turn;
         } else {
+            //If Player vs. Computer (challenge mode on)
             turn = !turn;
             HumanMode(view);
             ComputerMode("X");
         }
     }
 
+    //Player makes a move
     public void HumanMode(View view) {
+        Button buttons[][] = new Button[3][3];
+        Button button1 = (Button) findViewById(R.id.button1);
+        buttons[0][0] = button1;
+        Button button2 = (Button) findViewById(R.id.button2);
+        buttons[0][1] = button2;
+        Button button3 = (Button) findViewById(R.id.button3);
+        buttons[0][2] = button3;
+        Button button4 = (Button) findViewById(R.id.button4);
+        buttons[1][0] = button4;
+        Button button5 = (Button) findViewById(R.id.button5);
+        buttons[1][1] = button5;
+        Button button6 = (Button) findViewById(R.id.button6);
+        buttons[1][2] = button6;
+        Button button7 = (Button) findViewById(R.id.button7);
+        buttons[2][0] = button7;
+        Button button8 = (Button) findViewById(R.id.button8);
+        buttons[2][1] = button8;
+        Button button9 = (Button) findViewById(R.id.button9);
+        buttons[2][2] = button9;
+
+        assert (button1 != null);
+        assert (button2 != null);
+        assert (button3 != null);
+        assert (button4 != null);
+        assert (button5 != null);
+        assert (button6 != null);
+        assert (button7 != null);
+        assert (button8 != null);
+        assert (button9 != null);
+
         if (!won && count < 9) {
-            if (view.getId() == R.id.button1) {
-                Button button = (Button) findViewById(R.id.button1);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
+            for (int i=0; i<3; i++) {
+                for (int j=0; j<3; j++) {
+                    if (view==buttons[i][j]) {
+                        if (turn) {
+                            buttons[i][j].setText("X");
+                            turn = false;
+                        } else {
+                            buttons[i][j].setText("O");
+                            turn = true;
+                        }
+                        filled[i][j] = true;
+                        ++count;
+                        buttons[i][j].setClickable(false);
+                    }
                 }
-                filled[0][0] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button2) {
-                Button button = (Button) findViewById(R.id.button2);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[0][1] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button3) {
-                Button button = (Button) findViewById(R.id.button3);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[0][2] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button4) {
-                Button button = (Button) findViewById(R.id.button4);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[1][0] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button5) {
-                Button button = (Button) findViewById(R.id.button5);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[1][1] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button6) {
-                Button button = (Button) findViewById(R.id.button6);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[1][2] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button7) {
-                Button button = (Button) findViewById(R.id.button7);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[2][0] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button8) {
-                Button button = (Button) findViewById(R.id.button8);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[2][1] = true;
-                ++count;
-                button.setClickable(false);
-            } else if (view.getId() == R.id.button9) {
-                Button button = (Button) findViewById(R.id.button9);
-                assert (button != null);
-                if (turn) {
-                    button.setText("X");
-                    turn = false;
-                } else {
-                    button.setText("O");
-                    turn = true;
-                }
-                filled[2][2] = true;
-                ++count;
-                button.setClickable(false);
             }
         }
 
         if (checkWin("X") || checkWin("O")) {
-            TextView tv = (TextView) findViewById(R.id.text1);
-            assert (tv != null);
+            TextView displayWin = (TextView) findViewById(R.id.displayWin);
+            assert (displayWin != null);
             if (checkWin("X")) {
-                tv.setText(R.string.message1);
+                displayWin.setText(R.string.message1);
             } else {
-                tv.setText(R.string.message2);
+                displayWin.setText(R.string.message2);
             }
             won = true;
         } else if (count == 9) {
-            TextView tv = (TextView) findViewById(R.id.text1);
-            assert (tv != null);
-            tv.setText(R.string.message3);
+            TextView displayWin = (TextView) findViewById(R.id.displayWin);
+            assert (displayWin != null);
+            displayWin.setText(R.string.message3);
+        }
+
+        if (won || count == 9) {
+            for (int i=0; i<3; i++) {
+                for (int j=0; j<3; j++) {
+                    if (!filled[i][j]) {
+                        buttons[i][j].setClickable(false);
+                    }
+                }
+            }
         }
     }
 
+    //Computer makes a move
     public void ComputerMode(String s) {
         String opp = "";
         if (s.equals("X")) {
@@ -331,9 +249,9 @@ public class MainActivity extends AppCompatActivity {
         assert (button9 != null);
 
         if (checkWin(opp)) {
-            TextView tv = (TextView) findViewById(R.id.text1);
-            assert (tv != null);
-            tv.setText(R.string.message4);
+            TextView displayWin = (TextView) findViewById(R.id.displayWin);
+            assert (displayWin != null);
+            displayWin.setText(R.string.message4);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     buttons[i][j].setClickable(false);
@@ -377,8 +295,6 @@ public class MainActivity extends AppCompatActivity {
                     made_move = true;
                 }
             }
-
-            //Take opposite corner if possible???
 
             //Take empty corner
             if (!made_move && (level == 0 || level == 2)) {
@@ -456,22 +372,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (checkWin(s)) {
-                TextView tv = (TextView) findViewById(R.id.text1);
-                assert (tv != null);
-                tv.setText(R.string.message5);
+                TextView displayWin = (TextView) findViewById(R.id.displayWin);
+                assert (displayWin != null);
+                displayWin.setText(R.string.message5);
                 for (int a = 0; a < 3; a++) {
                     for (int b = 0; b < 3; b++) {
                         buttons[a][b].setClickable(false);
                     }
                 }
             } else if (count == 9) {
-                TextView tv = (TextView) findViewById(R.id.text1);
-                assert (tv != null);
-                tv.setText(R.string.message3);
+                TextView displayWin = (TextView) findViewById(R.id.displayWin);
+                assert (displayWin != null);
+                displayWin.setText(R.string.message3);
             }
         }
     }
 
+    //Win the game if possible
     public boolean win(boolean[][] filled, Button[][] buttons, String s) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -491,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    //Block the opponent from winning if possible
     public boolean blockWin(boolean[][] filled, Button[][] buttons, String s, String opp) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -510,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
+    //Make a fork if possible
     public boolean fork(boolean[][] filled, Button[][] buttons, String s) {
         int twos_count = 0;
 
@@ -533,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (twos_count >= 2) {
-                        buttons[i][j].setText(s); //Don't think this is needed
+                        //buttons[i][j].setText(s);
                         buttons[i][j].setClickable(false);
                         return true;
                     }
@@ -546,6 +464,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    //Block a fork if possible
     public boolean blockFork(boolean[][] filled, Button[][] buttons, String s, String opp) {
         int twos_count = 0;
 
@@ -581,10 +500,15 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    //New game
     public void NewGame(View view) {
         Reset();
+        if (challenge && !mode) {
+            ComputerMode("X");
+        }
     }
 
+    //Reset game board
     public void Reset() {
         Button button1 = (Button) findViewById(R.id.button1);
         assert (button1 != null);
@@ -623,9 +547,9 @@ public class MainActivity extends AppCompatActivity {
         button9.setText("");
         button9.setClickable(true);
 
-        TextView tv = (TextView) findViewById(R.id.text1);
-        assert (tv != null);
-        tv.setText(R.string.empty);
+        TextView displayWin = (TextView) findViewById(R.id.displayWin);
+        assert (displayWin != null);
+        displayWin.setText(R.string.empty);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -637,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
         count = 0;
     }
 
+    //Check if a user has won
     public boolean checkWin(String s) {
         Button buttons[][] = new Button[3][3];
         Button button1 = (Button) findViewById(R.id.button1);

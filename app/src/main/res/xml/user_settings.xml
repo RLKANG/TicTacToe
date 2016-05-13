@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- General Settings list -->
     <PreferenceCategory android:title="General Settings" >
 
+        <!-- Player Mode preference -->
         <ListPreference
             android:key="prefUpdateMode"
             android:title="Player Mode"
@@ -12,7 +14,10 @@
             android:defaultValue="1" />
     </PreferenceCategory>
 
+    <!-- Player vs. Computer Settings list -->
     <PreferenceCategory android:title="Player vs. Computer Settings" >
+
+        <!-- Level preference -->
         <ListPreference
             android:key="prefUpdateLevel"
             android:title="Level"
@@ -21,10 +26,11 @@
             android:entryValues="@array/updateLevelEntries"
             android:defaultValue="1" />
 
+        <!-- Challenge mode preference -->
         <ListPreference
             android:key="prefUpdateChallenge"
             android:title="Challenge Mode"
-            android:summary="Player goes first"
+            android:summary="Player goes first (OFF)"
             android:entries="@array/updateChallenge"
             android:entryValues="@array/updateChallengeEntries"
             android:defaultValue="1" />

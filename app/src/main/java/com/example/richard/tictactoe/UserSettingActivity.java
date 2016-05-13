@@ -25,7 +25,18 @@ public class UserSettingActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.user_settings);
             SharedPreferences sharedPref = getPreferenceScreen().getSharedPreferences();
             sharedPref.registerOnSharedPreferenceChangeListener(this);
+            update(sharedPref); //update preferences screen upon loading
+        }
 
+        //Listener for preference changes
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            update(sharedPreferences);
+        }
+
+        //update preference screen
+        public void update(SharedPreferences sharedPref) {
+
+            //get current mode and change summary of mode preference according to it
             Preference pref_mode = findPreference("prefUpdateMode");
             int cur_mode = Integer.parseInt(sharedPref.getString("prefUpdateMode", "1"));
             if (cur_mode == 1) {
@@ -34,6 +45,7 @@ public class UserSettingActivity extends PreferenceActivity {
                 pref_mode.setSummary("Player vs. Computer");
             }
 
+            //get current level and change summary of level preference according to it
             Preference pref_level = findPreference("prefUpdateLevel");
             int cur_level = Integer.parseInt(sharedPref.getString("prefUpdateLevel", "1"));
             if (cur_level == 1) {
@@ -44,51 +56,14 @@ public class UserSettingActivity extends PreferenceActivity {
                 pref_level.setSummary("Hard");
             }
 
+            //get current challenge mode and change summary of challenge mode according to it
             Preference pref_challenge = findPreference("prefUpdateChallenge");
             int cur_challenge = Integer.parseInt(sharedPref.getString("prefUpdateChallenge", "1"));
             if (cur_challenge == 1) {
-                pref_challenge.setSummary("Player goes first");
+                pref_challenge.setSummary("Player goes first (OFF)");
             } else {
-                pref_challenge.setSummary("Computer goes first");
+                pref_challenge.setSummary("Computer goes first (ON)");
             }
-        }
-
-        public void onSharedPreferenceChanged (SharedPreferences sharedPreferences, String key) {
-            Preference pref_mode= findPreference("prefUpdateMode");
-            String str_mode;
-            int cur_mode= Integer.parseInt(sharedPreferences.getString("prefUpdateMode", "1"));
-            if (cur_mode==1) {
-                str_mode="Player vs. Player";
-            }
-            else {
-                str_mode="Player vs. Computer";
-            }
-            pref_mode.setSummary(str_mode);
-
-            Preference pref_level= findPreference("prefUpdateLevel");
-            String str_level;
-            int cur_level= Integer.parseInt(sharedPreferences.getString("prefUpdateLevel", "1"));
-            if (cur_level==1) {
-                str_level="Easy";
-            }
-            else if (cur_level==2) {
-                str_level="Medium";
-            }
-            else {
-                str_level="Hard";
-            }
-            pref_level.setSummary(str_level);
-
-            Preference pref_challenge= findPreference("prefUpdateChallenge");
-            String str_challenge;
-            int cur_challenge= Integer.parseInt(sharedPreferences.getString("prefUpdateChallenge", "1"));
-            if (cur_challenge==1) {
-                str_challenge="Player goes first";
-            }
-            else {
-                str_challenge="Computer goes first";
-            }
-            pref_challenge.setSummary(str_challenge);
         }
     }
 }
