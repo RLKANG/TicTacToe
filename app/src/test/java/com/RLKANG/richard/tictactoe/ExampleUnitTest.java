@@ -1,4 +1,4 @@
-package com.example.richard.tictactoe;
+package com.RLKANG.richard.tictactoe;
 
 import org.junit.Test;
 

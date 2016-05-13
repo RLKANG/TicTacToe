@@ -1,10 +1,9 @@
-package com.example.richard.tictactoe;
+package com.RLKANG.richard.tictactoe;
 
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class UserSettingActivity extends PreferenceActivity {
