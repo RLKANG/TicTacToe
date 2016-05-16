@@ -32,7 +32,6 @@
         android:layout_row="0"
         android:layout_column="1"
         android:text=""
-
         android:onClick="UpdateState"/>
 
     <Button
@@ -103,6 +102,7 @@
     <Button
         android:id="@+id/reset"
         android:text="@string/newgame"
+        android:textSize="15sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_light"
@@ -118,7 +118,9 @@
         android:layout_below="@+id/reset"
         android:layout_centerInParent="true"
         android:layout_margin="25dp"
-        android:text="" />
+        android:text=""
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
     <!-- Displays the level of play (if Player vs. Computer mode) -->
     <TextView
@@ -127,9 +129,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_above="@+id/settings"
-        android:text="" />
+        android:text=""
+        android:textSize="15sp"/>
 
     <!-- Settings button -->
     <Button
@@ -140,7 +143,6 @@
         android:layout_above="@+id/displayMode"
         android:text="@string/settings"
         android:background="@android:color/holo_blue_light"
-        android:layout_marginBottom="10dp"
         android:onClick="Settings"/>
 
     <!-- Displays the mode of play -->
@@ -152,6 +154,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
-        android:text="@string/mode1" />
+        android:text="@string/mode1"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
 
 </RelativeLayout>
